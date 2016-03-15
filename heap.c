@@ -126,7 +126,7 @@ int main()
 {   
     int i;
     Heap heap;
-/*    InsertNode(&heap, 10);
+    InsertNode(&heap, 10);
     InsertNode(&heap, 11);
     InsertNode(&heap, 13);
     InsertNode(&heap, 12);
@@ -139,19 +139,19 @@ int main()
     InsertNode(&heap, 11);
     InsertNode(&heap, 2);
     InsertNode(&heap, 44);
-    InsertNode(&heap, 88);*/
+    InsertNode(&heap, 88);
 
-    /*PrintHeap(&heap);*/
+    PrintHeap(&heap);
 
     for (i = 0; i < 1000; i++)
         InsertNode(&heap, i);
     PrintHeap(&heap);    
-/*
+
     for (i = 0; i < 3; i++)
     {
         DeleteNode(&heap);
         PrintHeap(&heap);
-    }*/
+    }
 
     HeapSort(&heap);
     PrintHeap(&heap);

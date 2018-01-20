@@ -9,7 +9,6 @@ PROPERTIES:
 4. If a node is red, then both its children are black.
 5. For each node, all simple paths from the node to descendant leaves contain the
 same number of black nodes
-
 */
 
 import (
@@ -118,16 +117,20 @@ func RedBlackTreeInsert(tree *RedBlackTree, value int) {
 
 func RedBlackTreeFixup(tree *RedBlackTree, newNode *Node) {
 	iterator := newNode
-	for iterator.parent.color == red { // when property 4. is violated
-		if iterator.parent == iterator.parent.parent.left { // iterator's parent is the left child of its grandparent
+	for iterator.parent.color == red {
+		// when property 4. is violated
+		if iterator.parent == iterator.parent.parent.left {
+			// iterator's parent is the left child of its grandparent
 			uncle := iterator.parent.parent.right
 			if uncle.color == red { // case 1, only recoloring
 				iterator.parent.color = black
 				uncle.color = black
 				iterator.parent.parent.color = red
 				iterator = iterator.parent.parent
-			} else { // uncle is black, needs rotations
-				if iterator == iterator.parent.right { // case 2
+			} else {
+				// uncle is black, needs rotations
+				if iterator == iterator.parent.right {
+					// case 2
 					iterator = iterator.parent
 					RedBlackTreeLeftRotate(tree, iterator)
 				}
@@ -136,7 +139,8 @@ func RedBlackTreeFixup(tree *RedBlackTree, newNode *Node) {
 				iterator.parent.parent.color = red
 				RedBlackTreeRightRotate(tree, iterator.parent.parent)
 			}
-		} else { // iterator's parent is the right child of its grandparent; symmetric
+		} else {
+			// iterator's parent is the right child of its grandparent; symmetric
 			uncle := iterator.parent.parent.left
 			if uncle.color == red {
 				iterator.parent.color = black

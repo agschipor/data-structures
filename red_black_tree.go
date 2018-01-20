@@ -116,6 +116,7 @@ func RedBlackTreeInsert(tree *RedBlackTree, value int) {
 }
 
 func RedBlackTreeFixup(tree *RedBlackTree, newNode *Node) {
+	// only properties 4. and 2. can be violated by an insertion
 	iterator := newNode
 	for iterator.parent.color == red {
 		// when property 4. is violated
@@ -158,6 +159,7 @@ func RedBlackTreeFixup(tree *RedBlackTree, newNode *Node) {
 			}
 		}
 	}
+	// for property 2.
 	tree.root.color = black
 }
 

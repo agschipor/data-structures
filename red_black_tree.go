@@ -1,7 +1,20 @@
 package main
 
+/*
+PROPERTIES:
+
+1. Every node is either red or black.
+2. The root is black.
+3. Every leaf (NIL) is black.
+4. If a node is red, then both its children are black.
+5. For each node, all simple paths from the node to descendant leaves contain the
+same number of black nodes
+
+*/
+
 import (
 	"fmt"
+	"strings"
 )
 
 const (
@@ -100,10 +113,88 @@ func RedBlackTreeInsert(tree *RedBlackTree, value int) {
 
 	newNode.left = tree.dummy
 	newNode.right = tree.dummy
+	RedBlackTreeFixup(tree, &newNode)
+}
+
+func RedBlackTreeFixup(tree *RedBlackTree, newNode *Node) {
+	iterator := newNode
+	for iterator.parent.color == red { // when property 4. is violated
+		if iterator.parent == iterator.parent.parent.left { // iterator's parent is the left child of its grandparent
+			uncle := iterator.parent.parent.right
+			if uncle.color == red { // case 1, only recoloring
+				iterator.parent.color = black
+				uncle.color = black
+				iterator.parent.parent.color = red
+				iterator = iterator.parent.parent
+			} else { // uncle is black, needs rotations
+				if iterator == iterator.parent.right { // case 2
+					iterator = iterator.parent
+					RedBlackTreeLeftRotate(tree, iterator)
+				}
+				// case 3
+				iterator.parent.color = black
+				iterator.parent.parent.color = red
+				RedBlackTreeRightRotate(tree, iterator.parent.parent)
+			}
+		} else { // iterator's parent is the right child of its grandparent; symmetric
+			uncle := iterator.parent.parent.left
+			if uncle.color == red {
+				iterator.parent.color = black
+				uncle.color = black
+				iterator.parent.parent.color = red
+				iterator = iterator.parent.parent
+			} else {
+				if iterator == iterator.parent.left {
+					iterator = iterator.parent
+					RedBlackTreeRightRotate(tree, iterator)
+				}
+				iterator.parent.color = black
+				iterator.parent.parent.color = red
+				RedBlackTreeLeftRotate(tree, iterator.parent.parent)
+			}
+		}
+	}
+	tree.root.color = black
+}
+
+func RedBlackTreePrint(tree *RedBlackTree, node *Node, tabs int) {
+	if node == tree.dummy {
+		return
+	}
+
+	tabChars := strings.Repeat("\t", tabs)
+	fmt.Print(tabChars)
+
+	switch {
+	case tree.root == node:
+		fmt.Print("(root) ")
+	case node == node.parent.left:
+		fmt.Print("(left) ")
+	case node == node.parent.right:
+		fmt.Print("(right) ")
+	}
+
+	if node.color == red {
+		fmt.Print("(red) ")
+	} else {
+		fmt.Print("(black) ")
+	}
+	fmt.Println(node.value)
+	RedBlackTreePrint(tree, node.left, tabs+1)
+	RedBlackTreePrint(tree, node.right, tabs+1)
 }
 
 func main() {
 	var tree *RedBlackTree = RedBlackTreeCreate()
+	RedBlackTreeInsert(tree, 11)
+	RedBlackTreeInsert(tree, 2)
+	RedBlackTreeInsert(tree, 14)
 	RedBlackTreeInsert(tree, 1)
-	fmt.Println(tree, tree.root)
+	RedBlackTreeInsert(tree, 7)
+	RedBlackTreeInsert(tree, 5)
+	RedBlackTreeInsert(tree, 8)
+	RedBlackTreeInsert(tree, 15)
+	RedBlackTreeInsert(tree, 4)
+	RedBlackTreeInsert(tree, 3)
+	RedBlackTreePrint(tree, tree.root, 0)
 }

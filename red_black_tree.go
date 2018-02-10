@@ -191,7 +191,7 @@ func RedBlackTreePrint(tree *RedBlackTree, node *Node, tabs int) {
 }
 
 func main() {
-	var tree *RedBlackTree = RedBlackTreeCreate()
+	tree := RedBlackTreeCreate()
 	RedBlackTreeInsert(tree, 11)
 	RedBlackTreeInsert(tree, 2)
 	RedBlackTreeInsert(tree, 14)

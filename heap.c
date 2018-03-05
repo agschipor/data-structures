@@ -2,6 +2,8 @@
 
 #define MAX_SIZE 1024
 
+// testing
+
 typedef enum {false, true} bool;
 
 typedef struct Heap 
